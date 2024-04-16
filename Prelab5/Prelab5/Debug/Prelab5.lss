@@ -1,0 +1,364 @@
+
+Prelab5.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00800100  000002a6  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         00000232  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000002  00800100  00800100  000002a6  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  000002a6  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000002d8  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000088  00000000  00000000  00000318  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   00000a27  00000000  00000000  000003a0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 000007ea  00000000  00000000  00000dc7  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   000005a6  00000000  00000000  000015b1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000120  00000000  00000000  00001b58  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    00000491  00000000  00000000  00001c78  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    00000193  00000000  00000000  00002109  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000068  00000000  00000000  0000229c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+   8:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+   c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  10:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  14:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  18:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  1c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  20:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  24:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  28:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  2c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  30:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  34:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  38:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  3c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  40:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  44:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  48:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  4c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  50:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  54:	0c 94 87 00 	jmp	0x10e	; 0x10e <__vector_21>
+  58:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  5c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  60:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  64:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf ef       	ldi	r28, 0xFF	; 255
+  6e:	d8 e0       	ldi	r29, 0x08	; 8
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+
+00000074 <__do_clear_bss>:
+  74:	21 e0       	ldi	r18, 0x01	; 1
+  76:	a0 e0       	ldi	r26, 0x00	; 0
+  78:	b1 e0       	ldi	r27, 0x01	; 1
+  7a:	01 c0       	rjmp	.+2      	; 0x7e <.do_clear_bss_start>
+
+0000007c <.do_clear_bss_loop>:
+  7c:	1d 92       	st	X+, r1
+
+0000007e <.do_clear_bss_start>:
+  7e:	a2 30       	cpi	r26, 0x02	; 2
+  80:	b2 07       	cpc	r27, r18
+  82:	e1 f7       	brne	.-8      	; 0x7c <.do_clear_bss_loop>
+  84:	0e 94 72 00 	call	0xe4	; 0xe4 <main>
+  88:	0c 94 17 01 	jmp	0x22e	; 0x22e <_exit>
+
+0000008c <__bad_interrupt>:
+  8c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000090 <initADC>:
+	}
+}
+
+void initADC(void) //Funcion para inicializar el ADC
+{
+	ADMUX = 0;
+  90:	ec e7       	ldi	r30, 0x7C	; 124
+  92:	f0 e0       	ldi	r31, 0x00	; 0
+  94:	10 82       	st	Z, r1
+	
+	ADMUX |= (1<<REFS0); //conectamos a AVcc
+  96:	80 81       	ld	r24, Z
+  98:	80 64       	ori	r24, 0x40	; 64
+  9a:	80 83       	st	Z, r24
+	ADMUX &= ~(1<<REFS1);
+  9c:	80 81       	ld	r24, Z
+  9e:	8f 77       	andi	r24, 0x7F	; 127
+  a0:	80 83       	st	Z, r24
+	
+	ADMUX |= 0b00000110; //Seleccionamos A6
+  a2:	80 81       	ld	r24, Z
+  a4:	86 60       	ori	r24, 0x06	; 6
+  a6:	80 83       	st	Z, r24
+	
+	ADMUX |= (1<<ADLAR); // Justificado a la izquierda
+  a8:	80 81       	ld	r24, Z
+  aa:	80 62       	ori	r24, 0x20	; 32
+  ac:	80 83       	st	Z, r24
+	
+	ADCSRA |= (1<<ADEN); //Encendemos el ADC
+  ae:	ea e7       	ldi	r30, 0x7A	; 122
+  b0:	f0 e0       	ldi	r31, 0x00	; 0
+  b2:	80 81       	ld	r24, Z
+  b4:	80 68       	ori	r24, 0x80	; 128
+  b6:	80 83       	st	Z, r24
+	ADCSRA |= (1<<ADIE); // Encendemos el interrupt
+  b8:	80 81       	ld	r24, Z
+  ba:	88 60       	ori	r24, 0x08	; 8
+  bc:	80 83       	st	Z, r24
+	ADCSRA |= (0b00000111); //Prescaler de 128
+  be:	80 81       	ld	r24, Z
+  c0:	87 60       	ori	r24, 0x07	; 7
+  c2:	80 83       	st	Z, r24
+  c4:	08 95       	ret
+
+000000c6 <setup>:
+
+uint16_t ADCResult = 0;
+
+void setup(void)
+{
+	cli();
+  c6:	f8 94       	cli
+
+	initPWM1FastTopA(reset, no_invertido, 64, 2499);
+  c8:	23 ec       	ldi	r18, 0xC3	; 195
+  ca:	39 e0       	ldi	r19, 0x09	; 9
+  cc:	40 e4       	ldi	r20, 0x40	; 64
+  ce:	50 e0       	ldi	r21, 0x00	; 0
+  d0:	60 e0       	ldi	r22, 0x00	; 0
+  d2:	81 e0       	ldi	r24, 0x01	; 1
+  d4:	0e 94 bd 00 	call	0x17a	; 0x17a <initPWM1FastTopA>
+	
+	UCSR0B = 0; // Deshablitamos serial en D0 y D1
+  d8:	10 92 c1 00 	sts	0x00C1, r1	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7f80c1>
+	
+	initADC();
+  dc:	0e 94 48 00 	call	0x90	; 0x90 <initADC>
+	
+	sei();
+  e0:	78 94       	sei
+  e2:	08 95       	ret
+
+000000e4 <main>:
+}
+
+int main(void)
+{
+	setup();
+  e4:	0e 94 63 00 	call	0xc6	; 0xc6 <setup>
+	updateDutyCycle1A(150);
+  e8:	86 e9       	ldi	r24, 0x96	; 150
+  ea:	90 e0       	ldi	r25, 0x00	; 0
+  ec:	0e 94 12 01 	call	0x224	; 0x224 <updateDutyCycle1A>
+	while (1)
+	{
+		ADCSRA |= (1<<ADSC); //reiniciamos el ADC
+  f0:	ea e7       	ldi	r30, 0x7A	; 122
+  f2:	f0 e0       	ldi	r31, 0x00	; 0
+  f4:	80 81       	ld	r24, Z
+  f6:	80 64       	ori	r24, 0x40	; 64
+  f8:	80 83       	st	Z, r24
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  fa:	2f ef       	ldi	r18, 0xFF	; 255
+  fc:	81 ee       	ldi	r24, 0xE1	; 225
+  fe:	94 e0       	ldi	r25, 0x04	; 4
+ 100:	21 50       	subi	r18, 0x01	; 1
+ 102:	80 40       	sbci	r24, 0x00	; 0
+ 104:	90 40       	sbci	r25, 0x00	; 0
+ 106:	e1 f7       	brne	.-8      	; 0x100 <main+0x1c>
+ 108:	00 c0       	rjmp	.+0      	; 0x10a <main+0x26>
+ 10a:	00 00       	nop
+ 10c:	f1 cf       	rjmp	.-30     	; 0xf0 <main+0xc>
+
+0000010e <__vector_21>:
+	ADCSRA |= (1<<ADEN); //Encendemos el ADC
+	ADCSRA |= (1<<ADIE); // Encendemos el interrupt
+	ADCSRA |= (0b00000111); //Prescaler de 128
+}
+
+ISR(ADC_vect){
+ 10e:	1f 92       	push	r1
+ 110:	0f 92       	push	r0
+ 112:	0f b6       	in	r0, 0x3f	; 63
+ 114:	0f 92       	push	r0
+ 116:	11 24       	eor	r1, r1
+ 118:	2f 93       	push	r18
+ 11a:	3f 93       	push	r19
+ 11c:	4f 93       	push	r20
+ 11e:	5f 93       	push	r21
+ 120:	6f 93       	push	r22
+ 122:	7f 93       	push	r23
+ 124:	8f 93       	push	r24
+ 126:	9f 93       	push	r25
+ 128:	af 93       	push	r26
+ 12a:	bf 93       	push	r27
+ 12c:	ef 93       	push	r30
+ 12e:	ff 93       	push	r31
+	ADCResult = ADCH + 65;
+ 130:	80 91 79 00 	lds	r24, 0x0079	; 0x800079 <__TEXT_REGION_LENGTH__+0x7f8079>
+ 134:	90 e0       	ldi	r25, 0x00	; 0
+ 136:	8f 5b       	subi	r24, 0xBF	; 191
+ 138:	9f 4f       	sbci	r25, 0xFF	; 255
+ 13a:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <__DATA_REGION_ORIGIN__+0x1>
+ 13e:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
+	ADCSRA |= (1<<ADIF);
+ 142:	ea e7       	ldi	r30, 0x7A	; 122
+ 144:	f0 e0       	ldi	r31, 0x00	; 0
+ 146:	80 81       	ld	r24, Z
+ 148:	80 61       	ori	r24, 0x10	; 16
+ 14a:	80 83       	st	Z, r24
+	
+	updateDutyCycle1A(ADCResult);
+ 14c:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
+ 150:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <__DATA_REGION_ORIGIN__+0x1>
+ 154:	0e 94 12 01 	call	0x224	; 0x224 <updateDutyCycle1A>
+	
+	return;
+	
+}
+ 158:	ff 91       	pop	r31
+ 15a:	ef 91       	pop	r30
+ 15c:	bf 91       	pop	r27
+ 15e:	af 91       	pop	r26
+ 160:	9f 91       	pop	r25
+ 162:	8f 91       	pop	r24
+ 164:	7f 91       	pop	r23
+ 166:	6f 91       	pop	r22
+ 168:	5f 91       	pop	r21
+ 16a:	4f 91       	pop	r20
+ 16c:	3f 91       	pop	r19
+ 16e:	2f 91       	pop	r18
+ 170:	0f 90       	pop	r0
+ 172:	0f be       	out	0x3f, r0	; 63
+ 174:	0f 90       	pop	r0
+ 176:	1f 90       	pop	r1
+ 178:	18 95       	reti
+
+0000017a <initPWM1FastTopA>:
+
+void updateDutyCycle0A(uint8_t duty) {
+	OCR0A = duty;}
+
+void updateDutyCycle0B(uint8_t duty) {
+	OCR0B = duty;}
+ 17a:	94 b1       	in	r25, 0x04	; 4
+ 17c:	92 60       	ori	r25, 0x02	; 2
+ 17e:	94 b9       	out	0x04, r25	; 4
+ 180:	88 23       	and	r24, r24
+ 182:	21 f0       	breq	.+8      	; 0x18c <initPWM1FastTopA+0x12>
+ 184:	10 92 80 00 	sts	0x0080, r1	; 0x800080 <__TEXT_REGION_LENGTH__+0x7f8080>
+ 188:	10 92 81 00 	sts	0x0081, r1	; 0x800081 <__TEXT_REGION_LENGTH__+0x7f8081>
+ 18c:	10 92 82 00 	sts	0x0082, r1	; 0x800082 <__TEXT_REGION_LENGTH__+0x7f8082>
+ 190:	e0 e8       	ldi	r30, 0x80	; 128
+ 192:	f0 e0       	ldi	r31, 0x00	; 0
+ 194:	80 81       	ld	r24, Z
+ 196:	80 68       	ori	r24, 0x80	; 128
+ 198:	80 83       	st	Z, r24
+ 19a:	66 23       	and	r22, r22
+ 19c:	19 f0       	breq	.+6      	; 0x1a4 <initPWM1FastTopA+0x2a>
+ 19e:	80 81       	ld	r24, Z
+ 1a0:	80 64       	ori	r24, 0x40	; 64
+ 1a2:	80 83       	st	Z, r24
+ 1a4:	e0 e8       	ldi	r30, 0x80	; 128
+ 1a6:	f0 e0       	ldi	r31, 0x00	; 0
+ 1a8:	80 81       	ld	r24, Z
+ 1aa:	8a 61       	ori	r24, 0x1A	; 26
+ 1ac:	80 83       	st	Z, r24
+ 1ae:	40 34       	cpi	r20, 0x40	; 64
+ 1b0:	51 05       	cpc	r21, r1
+ 1b2:	e1 f0       	breq	.+56     	; 0x1ec <initPWM1FastTopA+0x72>
+ 1b4:	38 f4       	brcc	.+14     	; 0x1c4 <initPWM1FastTopA+0x4a>
+ 1b6:	41 30       	cpi	r20, 0x01	; 1
+ 1b8:	51 05       	cpc	r21, r1
+ 1ba:	61 f0       	breq	.+24     	; 0x1d4 <initPWM1FastTopA+0x5a>
+ 1bc:	48 30       	cpi	r20, 0x08	; 8
+ 1be:	51 05       	cpc	r21, r1
+ 1c0:	79 f0       	breq	.+30     	; 0x1e0 <initPWM1FastTopA+0x66>
+ 1c2:	26 c0       	rjmp	.+76     	; 0x210 <initPWM1FastTopA+0x96>
+ 1c4:	41 15       	cp	r20, r1
+ 1c6:	81 e0       	ldi	r24, 0x01	; 1
+ 1c8:	58 07       	cpc	r21, r24
+ 1ca:	b1 f0       	breq	.+44     	; 0x1f8 <initPWM1FastTopA+0x7e>
+ 1cc:	41 15       	cp	r20, r1
+ 1ce:	54 40       	sbci	r21, 0x04	; 4
+ 1d0:	c9 f0       	breq	.+50     	; 0x204 <initPWM1FastTopA+0x8a>
+ 1d2:	1e c0       	rjmp	.+60     	; 0x210 <initPWM1FastTopA+0x96>
+ 1d4:	e1 e8       	ldi	r30, 0x81	; 129
+ 1d6:	f0 e0       	ldi	r31, 0x00	; 0
+ 1d8:	80 81       	ld	r24, Z
+ 1da:	81 60       	ori	r24, 0x01	; 1
+ 1dc:	80 83       	st	Z, r24
+ 1de:	1d c0       	rjmp	.+58     	; 0x21a <initPWM1FastTopA+0xa0>
+ 1e0:	e1 e8       	ldi	r30, 0x81	; 129
+ 1e2:	f0 e0       	ldi	r31, 0x00	; 0
+ 1e4:	80 81       	ld	r24, Z
+ 1e6:	82 60       	ori	r24, 0x02	; 2
+ 1e8:	80 83       	st	Z, r24
+ 1ea:	17 c0       	rjmp	.+46     	; 0x21a <initPWM1FastTopA+0xa0>
+ 1ec:	e1 e8       	ldi	r30, 0x81	; 129
+ 1ee:	f0 e0       	ldi	r31, 0x00	; 0
+ 1f0:	80 81       	ld	r24, Z
+ 1f2:	83 60       	ori	r24, 0x03	; 3
+ 1f4:	80 83       	st	Z, r24
+ 1f6:	11 c0       	rjmp	.+34     	; 0x21a <initPWM1FastTopA+0xa0>
+ 1f8:	e1 e8       	ldi	r30, 0x81	; 129
+ 1fa:	f0 e0       	ldi	r31, 0x00	; 0
+ 1fc:	80 81       	ld	r24, Z
+ 1fe:	84 60       	ori	r24, 0x04	; 4
+ 200:	80 83       	st	Z, r24
+ 202:	0b c0       	rjmp	.+22     	; 0x21a <initPWM1FastTopA+0xa0>
+ 204:	e1 e8       	ldi	r30, 0x81	; 129
+ 206:	f0 e0       	ldi	r31, 0x00	; 0
+ 208:	80 81       	ld	r24, Z
+ 20a:	85 60       	ori	r24, 0x05	; 5
+ 20c:	80 83       	st	Z, r24
+ 20e:	05 c0       	rjmp	.+10     	; 0x21a <initPWM1FastTopA+0xa0>
+ 210:	e1 e8       	ldi	r30, 0x81	; 129
+ 212:	f0 e0       	ldi	r31, 0x00	; 0
+ 214:	80 81       	ld	r24, Z
+ 216:	85 60       	ori	r24, 0x05	; 5
+ 218:	80 83       	st	Z, r24
+ 21a:	30 93 87 00 	sts	0x0087, r19	; 0x800087 <__TEXT_REGION_LENGTH__+0x7f8087>
+ 21e:	20 93 86 00 	sts	0x0086, r18	; 0x800086 <__TEXT_REGION_LENGTH__+0x7f8086>
+ 222:	08 95       	ret
+
+00000224 <updateDutyCycle1A>:
+	
+void updateDutyCycle1A(uint16_t duty) {
+	OCR1A = duty;
+ 224:	90 93 89 00 	sts	0x0089, r25	; 0x800089 <__TEXT_REGION_LENGTH__+0x7f8089>
+ 228:	80 93 88 00 	sts	0x0088, r24	; 0x800088 <__TEXT_REGION_LENGTH__+0x7f8088>
+ 22c:	08 95       	ret
+
+0000022e <_exit>:
+ 22e:	f8 94       	cli
+
+00000230 <__stop_program>:
+ 230:	ff cf       	rjmp	.-2      	; 0x230 <__stop_program>
