@@ -318,6 +318,45 @@ void initPWM0Fake(uint8_t duty, uint8_t top, uint8_t timertop, uint16_t prescale
 	
 };
 
+// a diferencia de la pasada en esta simplemente cambiamos cuando llegamos a OCR0A
+
+void initPWM0FakeV2(uint8_t duty, uint8_t top, uint16_t prescaler){
+	//Poner a PD6 como salida
+	DDRB |= (1<<DDB5);
+	
+	TCCR0A = 0;
+	TCCR0B = 0;
+	
+	TIMSK0 = 0x03; // habilitamos interrupt en TIMR0 overflow y OCR0A compare match
+	
+	TCNT0 = 255 - top;
+	OCR0A = duty;
+	
+	
+	
+	//Prescaler
+	
+	switch(prescaler) { // colocamos valores de prescaler
+		case 1: TCCR0B |= (1<<CS00);
+		break;
+		
+		case 8: TCCR0B |= (1<<CS01);
+		break;
+		
+		case 64: TCCR0B |= (1<<CS01)|(1<<CS00);
+		break;
+		
+		case 256: TCCR0B |= (1<<CS02);
+		break;
+		
+		case 1024: TCCR0B |= (1<<CS02)|(1<<CS00);
+		break;
+		
+		default: TCCR0B |= (1<<CS02)|(1<<CS00); //1024 de default
+	}
+	
+};
+
 //update duty cycles
 
 void updateDutyCycle0A(uint8_t duty) {

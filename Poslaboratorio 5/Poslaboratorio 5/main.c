@@ -6,7 +6,7 @@
 ; Proyecto: Poslaboratorio 5
 ; Hardware: ATMEGA328P
 ; Creado: 22/04/2024
-; Ultima modificacion: 22/04/2024
+; Ultima modificacion: 23/04/2024
 *******************************************************************************/
 
 #define F_CPU 1000000
@@ -19,13 +19,11 @@
 
 void initADC(void);
 void convertADC(char channel);
-char changesomebits(char oldvalue, char bitstochange, char newvalue);
 
 uint16_t ADCResultServo1 = 0;
 uint8_t ADCResultServo2 = 0;
 uint8_t ADCResultLED = 0;
 uint8_t ADCChannel = 6;
-
 
 void setup(void)
 {
@@ -35,7 +33,7 @@ void setup(void)
 	CLKPR = (0x03); // Colocamos prescaler de 8
 
 
-	initPWM0Fake(0, 255, 25, 1); // activamos el timer 0 en pwm falso
+	initPWM0Fake(0, 255, 255, 1); // activamos el timer 0 en pwm falso
 	initPWM1FastTopA(reset, no_invertido, 8, 2499); //activamos el timer 1 en modo pwm
 	initPWM2FastB(reset, no_invertido, 128); // Activamos el timer 2 en modo pwm
 
@@ -53,7 +51,9 @@ int main(void)
 	setup();
 	updateDutyCycle1A(150);
 	updateDutyCycle2B(10);
-	while (1)
+	
+	
+	while (1) //Ejecutamos los ADCs de los 3 channels
 	{
 		ADCChannel = 5; //iniciamos el ADC convirtiendo el canal 5
 		convertADC(ADCChannel);
@@ -69,6 +69,10 @@ int main(void)
 	}
 }
 
+//////////////////////////////////////////////////////
+// Funciones ADC
+//////////////////////////////////////////////////////
+
 void initADC(void) //Funcion para inicializar el ADC
 {
 	ADMUX = 0;
@@ -80,7 +84,7 @@ void initADC(void) //Funcion para inicializar el ADC
 	
 	ADCSRA |= (1<<ADEN); //Encendemos el ADC
 	ADCSRA |= (1<<ADIE); // Encendemos el interrupt
-	ADCSRA |= (0b00000111); //Prescaler de 128
+	ADCSRA |= (0b00000011); //Prescaler de 128
 }
 
 void convertADC(char channel) //Funcion para leer info ADC
@@ -93,6 +97,10 @@ void convertADC(char channel) //Funcion para leer info ADC
 	ADMUX |= channel; // seleccionamos el canal correcto
 	ADCSRA |= (1<<ADSC); // iniciamos el ADC
 }
+
+//////////////////////////////////////////////////////
+// Funciones ISR
+//////////////////////////////////////////////////////
 
 ISR(ADC_vect){
 	if (ADCChannel == 5) {ADCResultServo1 = ADCH + 65;}
@@ -117,16 +125,8 @@ ISR(TIMER0_OVF_vect) {
 	}
 	
 	if (fakePWMcounter == fakePWMduty) {
-	PORTB &= ~(1<<PORTB5); //Apagamos el pin
+		PORTB &= ~(1<<PORTB5); //Apagamos el pin
 	}
 	
 	TIFR0 |= TOV0;
 }
-
-char changesomebits(char oldvalue, char bitstochange, char newvalue) //Funcion para solo cambiar algunos bits en un registro
-{	char result = (newvalue & bitstochange) | (oldvalue & ~bitstochange);
-	return result;
-}
-
-
-

@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000000d0  00000000  00000000  000005f0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000e26  00000000  00000000  000006c0  2**0
+  6 .debug_info   00000e1c  00000000  00000000  000006c0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000865  00000000  00000000  000014e6  2**0
+  7 .debug_abbrev 0000083a  00000000  00000000  000014dc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000098d  00000000  00000000  00001d4b  2**0
+  8 .debug_line   000009ed  00000000  00000000  00001d16  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000001d0  00000000  00000000  000026d8  2**2
+  9 .debug_frame  000001d0  00000000  00000000  00002704  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000590  00000000  00000000  000028a8  2**0
+ 10 .debug_str    0000056a  00000000  00000000  000028d4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000328  00000000  00000000  00002e38  2**0
+ 11 .debug_loc    000003c0  00000000  00000000  00002e3e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000b0  00000000  00000000  00003160  2**0
+ 12 .debug_ranges 000000b0  00000000  00000000  000031fe  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -101,8 +101,8 @@ Disassembly of section .text:
   a2:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 000000a6 <initADC>:
-	}
-}
+// Funciones ADC
+//////////////////////////////////////////////////////
 
 void initADC(void) //Funcion para inicializar el ADC
 {
@@ -135,15 +135,15 @@ void initADC(void) //Funcion para inicializar el ADC
   c8:	80 81       	ld	r24, Z
   ca:	88 60       	ori	r24, 0x08	; 8
   cc:	80 83       	st	Z, r24
-	ADCSRA |= (0b00000111); //Prescaler de 128
+	ADCSRA |= (0b00000011); //Prescaler de 128
   ce:	80 81       	ld	r24, Z
-  d0:	87 60       	ori	r24, 0x07	; 7
+  d0:	83 60       	ori	r24, 0x03	; 3
   d2:	80 83       	st	Z, r24
   d4:	08 95       	ret
 
 000000d6 <setup>:
+uint8_t ADCResultLED = 0;
 uint8_t ADCChannel = 6;
-
 
 void setup(void)
 {
@@ -160,10 +160,10 @@ void setup(void)
   e2:	80 83       	st	Z, r24
 
 
-	initPWM0Fake(0, 255, 50, 1); // activamos el timer 0 en pwm falso
+	initPWM0Fake(0, 255, 255, 1); // activamos el timer 0 en pwm falso
   e4:	21 e0       	ldi	r18, 0x01	; 1
   e6:	30 e0       	ldi	r19, 0x00	; 0
-  e8:	42 e3       	ldi	r20, 0x32	; 50
+  e8:	4f ef       	ldi	r20, 0xFF	; 255
   ea:	6f ef       	ldi	r22, 0xFF	; 255
   ec:	80 e0       	ldi	r24, 0x00	; 0
   ee:	0e 94 1b 02 	call	0x436	; 0x436 <initPWM0Fake>
@@ -197,7 +197,7 @@ void setup(void)
 
 0000011a <convertADC>:
 	ADCSRA |= (1<<ADIE); // Encendemos el interrupt
-	ADCSRA |= (0b00000111); //Prescaler de 128
+	ADCSRA |= (0b00000011); //Prescaler de 128
 }
 
 void convertADC(char channel) //Funcion para leer info ADC
@@ -247,7 +247,9 @@ int main(void)
 	updateDutyCycle2B(10);
  154:	8a e0       	ldi	r24, 0x0A	; 10
  156:	0e 94 6a 02 	call	0x4d4	; 0x4d4 <updateDutyCycle2B>
-	while (1)
+	
+	
+	while (1) //Ejecutamos los ADCs de los 3 channels
 	{
 		ADCChannel = 5; //iniciamos el ADC convirtiendo el canal 5
  15a:	85 e0       	ldi	r24, 0x05	; 5
@@ -295,10 +297,10 @@ int main(void)
  19c:	de cf       	rjmp	.-68     	; 0x15a <main+0x12>
 
 0000019e <__vector_21>:
-	
-	ADMUX |= channel; // seleccionamos el canal correcto
-	ADCSRA |= (1<<ADSC); // iniciamos el ADC
-}
+
+//////////////////////////////////////////////////////
+// Funciones ISR
+//////////////////////////////////////////////////////
 
 ISR(ADC_vect){
  19e:	1f 92       	push	r1
@@ -430,7 +432,7 @@ ISR(TIMER0_OVF_vect) {
  2a6:	28 17       	cp	r18, r24
  2a8:	39 07       	cpc	r19, r25
  2aa:	19 f4       	brne	.+6      	; 0x2b2 <__vector_16+0x6c>
-	PORTB &= ~(1<<PORTB5); //Apagamos el pin
+		PORTB &= ~(1<<PORTB5); //Apagamos el pin
  2ac:	85 b1       	in	r24, 0x05	; 5
  2ae:	8f 7d       	andi	r24, 0xDF	; 223
  2b0:	85 b9       	out	0x05, r24	; 5
@@ -439,7 +441,6 @@ ISR(TIMER0_OVF_vect) {
 	TIFR0 |= TOV0;
  2b2:	85 b3       	in	r24, 0x15	; 21
  2b4:	85 bb       	out	0x15, r24	; 21
-}
  2b6:	9f 91       	pop	r25
  2b8:	8f 91       	pop	r24
  2ba:	3f 91       	pop	r19

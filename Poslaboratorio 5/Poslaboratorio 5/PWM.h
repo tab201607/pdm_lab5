@@ -31,6 +31,7 @@ extern int fakePWMduty;
 void initPWM0FastA(uint8_t resetorno, uint8_t inverted, uint16_t prescaler);
 void initPWM0FastB(uint8_t resetorno, uint8_t inverted, uint16_t prescaler);
 void initPWM0Fake(uint8_t duty, uint8_t top, uint8_t timertop, uint16_t prescaler);
+void initPWM0FakeV2(uint8_t duty, uint8_t top, uint16_t prescaler);
 
 // Inicializar PWM1
 void initPWM1FastTopA(uint8_t resetorno, uint8_t inverted, uint16_t prescaler, uint16_t top);
